@@ -5,7 +5,7 @@ import (
 )
 
 func TestProfiling(t *testing.T) {
-	validatedScs([]string{"jack", "apple", "maven", "hold", "solid", "mark", "moon", "poor", "spark", "live"}, t)
+	validatedScs(t, []string{"jack", "apple", "maven", "hold", "solid", "mark", "moon", "poor", "spark", "live"})
 }
 
 func TestCases(t *testing.T) {
@@ -95,7 +95,7 @@ func assertScsLike(t *testing.T, words []string, example string) string {
 }
 
 func assertScsLikeOptions(t *testing.T, words []string, example string, options ScsOptions) string {
-	result := validatedScsOptions(words, t, options)
+	result := validatedScsOptions(t, words, options)
 	if len(result) != len(example) {
 		t.Logf("Expected length: %d, got %d\nWords: %v\nResult: %s", len(example), len(result), words, result)
 		t.Fatalf("Invalid SCS result")
@@ -106,11 +106,11 @@ func assertScsLikeOptions(t *testing.T, words []string, example string, options 
 	return result
 }
 
-func validatedScs(words []string, t *testing.T) string {
-	return validatedScsOptions(words, t, ScsOptions{Parallel: false, Deterministic: false})
+func validatedScs(t *testing.T, words []string) string {
+	return validatedScsOptions(t, words, ScsOptions{Parallel: false, Deterministic: false})
 }
 
-func validatedScsOptions(words []string, t *testing.T, options ScsOptions) string {
+func validatedScsOptions(t *testing.T, words []string, options ScsOptions) string {
 	result := scs(words, options)
 	if valid, invalid := validate(result, words); !valid {
 		t.Logf("Invalid result: %s", result)
